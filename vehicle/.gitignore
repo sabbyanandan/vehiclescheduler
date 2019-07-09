@@ -1,31 +1,38 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**
-!**/src/test/**
-
-### STS ###
-.apt_generated
-.classpath
+*~
+.#*
+*#
+*.sw*
+_site/
 .factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+.gradletasknamecache
+.DS_Store
+.checkstyle
+/application.yml
+/application.properties
+asciidoctor.css
+atlassian-ide-plugin.xml
+bin/
+build/
+dump.rdb
+out
+spring-shell.log
+target/
+test-output
+logs/
+scdf-logs/
+.attach_pid*
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# Eclipse artifacts, including WTP generated manifests
+.classpath
+.project
+.settings/
+.springBeans
+spring-*/src/main/java/META-INF/MANIFEST.MF
+
+# IDEA artifacts and output dirs
 *.iml
 *.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-
-### VS Code ###
+*.iws
+.idea/
 .vscode/
+rebel.xml
