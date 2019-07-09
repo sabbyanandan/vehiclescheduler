@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -48,7 +49,7 @@ public class VehicleApplication {
 		Vehicle vehicle = new Vehicle(Long.toHexString(Double.doubleToLongBits(Math.random())),
 				manufacturers.get(new Random().nextInt(manufacturers.size())),
 				vehicles.get(new Random().nextInt(vehicles.size())),
-				startTimes.get(new Random().nextInt(startTimes.size())));
+				startTimes.get(new Random().nextInt(startTimes.size())), Calendar.getInstance().getTime());
 
 		source.output().send(MessageBuilder.withPayload(vehicle).build());
 		System.out.println("Generated Vehicle: " + vehicle);
