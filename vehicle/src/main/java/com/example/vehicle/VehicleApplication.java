@@ -44,7 +44,7 @@ public class VehicleApplication {
 		SpringApplication.run(VehicleApplication.class, args);
 	}
 
-	@Scheduled(fixedRate = 2000L)
+	@Scheduled(fixedRate = 1000L)
 	public void generateAndSendNewVehicle() {
 		Vehicle vehicle = new Vehicle(Long.toHexString(Double.doubleToLongBits(Math.random())),
 				manufacturers.get(new Random().nextInt(manufacturers.size())),
