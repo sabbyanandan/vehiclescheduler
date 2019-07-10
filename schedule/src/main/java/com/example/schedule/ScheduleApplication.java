@@ -19,7 +19,7 @@ import org.springframework.kafka.support.serializer.JsonSerde;
 @EnableBinding(ScheduleApplication.VehicleScheduleProcessor.class)
 public class ScheduleApplication {
 
-	static String VEHICLE_SCH_VIEW = "vehicle-aggregates-1";
+	static String VEHICLE_SCH_VIEW = "vehicle-aggregates-4";
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScheduleApplication.class, args);
@@ -28,16 +28,37 @@ public class ScheduleApplication {
 	@StreamListener("input")
 	public void get(KStream<String, Vehicle> input) {
 
+		// find and aggregate the cars and its details based on schedule time (time at which car needs started)
+
 		input
 				.map((k, v) -> new KeyValue<>(((Vehicle) v).getStartTime(), ((Vehicle) v)))
 				.groupByKey(Serialized
 						.with(new JsonSerde<>(Vehicle.ScheduleStartTime.class), new JsonSerde<>(Vehicle.class)))
 				.windowedBy(TimeWindows.of(5000))
 				.aggregate(() -> new VehicleSchedule(),
-						(k, v, vehicleSchedule) -> vehicleSchedule.add(v),
+						(k, v, vehicleSchedule) -> {
+							vehicleSchedule.addToList(v);
+							return vehicleSchedule;
+						},
 						Materialized.<Vehicle.ScheduleStartTime, VehicleSchedule, WindowStore<Bytes, byte[]>>as(
 								VEHICLE_SCH_VIEW)
 								.withValueSerde(new VehicleScheduleSerde()))
+				.toStream()
+				.map((k, v) -> {
+					System.out.println("In the last " + 5 + " secs, " + v
+							+ " new Vehicles were added to the " + k
+							+ " Start-Time bucket.");
+					return new KeyValue(k, v);
+				});
+
+		// find count of total number of cars by schedule time (time at which car needs started)
+
+		input
+				.map((k, v) -> new KeyValue<>(((Vehicle) v).getStartTime(), ((Vehicle) v)))
+				.groupByKey(Serialized
+						.with(new JsonSerde<>(Vehicle.ScheduleStartTime.class), new JsonSerde<>(Vehicle.class)))
+				.windowedBy(TimeWindows.of(5000))
+				.count(Materialized.as("test"))
 				.toStream()
 				.map((k, v) -> {
 					System.out.println("In the last " + 5 + " secs, " + v

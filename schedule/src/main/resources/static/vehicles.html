@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="liquidFillGauge.js" language="JavaScript"></script>
+    <style>
+        .liquidFillGaugeText {
+            font-family: Helvetica;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+
+<div>
+    06:00 AM
+    <svg id="T_0600" width="19%" height="200"></svg>
+</div>
+<div>
+    06:05 AM
+    <svg id="T_0605" width="19%" height="200"></svg>
+</div>
+<div>
+    06:10 AM
+    <svg id="T_0610" width="19%" height="200"></svg>
+</div>
+<div>
+    06:30 AM
+    <svg id="T_0630" width="19%" height="200"></svg>
+</div>
+<div>
+    07:05 AM
+    <svg id="T_0705" width="19%" height="200"></svg>
+</div>
+<div>
+    07:10 AM
+    <svg id="T_0710" width="19%" height="200"></svg>
+</div>
+<div>
+    07:20 AM
+    <svg id="T_0720" width="19%" height="200"></svg>
+</div>
+<div>
+    07:30 AM
+    <svg id="T_0730" width="19%" height="200"></svg>
+</div>
+<div>
+    07:35 AM
+    <svg id="T_0735" width="19%" height="200"></svg>
+</div>
+<div>
+    07:39 AM
+    <svg id="T_0739" width="19%" height="200"></svg>
+</div>
+<div>
+    08:00 AM
+    <svg id="T_0800" width="19%" height="200"></svg>
+</div>
+
+<script language="JavaScript">
+
+    var commonConfig = liquidFillGaugeDefaultSettings();
+    commonConfig.textVertPosition = 0.8;
+    commonConfig.waveAnimateTime = 1000;
+    commonConfig.waveHeight = 0.05;
+    commonConfig.waveAnimate = true;
+    commonConfig.waveOffset = 0.25;
+    commonConfig.valueCountUp = true;
+    commonConfig.displayPercent = false;
+    commonConfig.maxValue = 5000;
+    commonConfig.circleThickness=0.15;
+
+    var gauge1 = loadLiquidFillGauge("T_0600", 0, commonConfig);
+    var gauge2 = loadLiquidFillGauge("T_0605", 0, commonConfig);
+    var gauge3 = loadLiquidFillGauge("T_0610", 0, commonConfig);
+    var gauge4 = loadLiquidFillGauge("T_0630", 0, commonConfig);
+    var gauge5 = loadLiquidFillGauge("T_0705", 0, commonConfig);
+    var gauge6 = loadLiquidFillGauge("T_0710", 0, commonConfig);
+    var gauge7 = loadLiquidFillGauge("T_0720", 0, commonConfig);
+    var gauge8 = loadLiquidFillGauge("T_0730", 0, commonConfig);
+    var gauge9 = loadLiquidFillGauge("T_0735", 0, commonConfig);
+    var gauge10 = loadLiquidFillGauge("T_0739", 0, commonConfig);
+    var gauge11 = loadLiquidFillGauge("T_0800", 0, commonConfig);
+
+
+    // initialize
+    load();
+
+    function load() {
+        var count;
+
+        var jsonData = $.ajax({
+            url: 'http://localhost:9002/count',
+            dataType: 'json',
+            async: false
+        }).success(function () {
+            setTimeout(function () {
+                load();
+            }, 2000);
+        }).error(function () {
+            console.log('no data!')
+        }).responseText;
+
+        if (jsonData != null) {
+
+            var obj = JSON.parse(jsonData);
+
+            for (var i in obj) {
+                count = parseFloat(obj[i]);
+
+                if (i === "T_0600") {
+                    gauge1.update(count);
+                } else if (i === "T_0605") {
+                    gauge2.update(count);
+                } else if (i === "T_0610") {
+                    gauge3.update(count);
+                } else if (i === "T_0630") {
+                    gauge4.update(count);
+                } else if (i === "T_0705") {
+                    gauge5.update(count);
+                } else if (i === "T_0710") {
+                    gauge6.update(count);
+                } else if (i === "T_0720") {
+                    gauge7.update(count);
+                } else if (i === "T_0730") {
+                    gauge8.update(count);
+                } else if (i === "T_0735") {
+                    gauge9.update(count);
+                } else if (i === "T_0739") {
+                    gauge10.update(count);
+                } else if (i === "T_0800") {
+                    gauge11.update(count);
+                }
+            }
+        }
+    }
+
+</script>
+
+</body>
+</html>
