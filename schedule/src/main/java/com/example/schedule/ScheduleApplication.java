@@ -31,18 +31,22 @@ public class ScheduleApplication {
 		// find and aggregate the cars and its details based on schedule time (time at which car needs started)
 
 		input
-				.map((k, v) -> new KeyValue<>(((Vehicle) v).getStartTime(), ((Vehicle) v)))
+				.map((k, v) -> new KeyValue<>(v.getStartTime(), v))
 				.groupByKey(Serialized
 						.with(new JsonSerde<>(Vehicle.ScheduleStartTime.class), new JsonSerde<>(Vehicle.class)))
-				.windowedBy(TimeWindows.of(5000))
-				.aggregate(() -> new VehicleSchedule(),
-						(k, v, vehicleSchedule) -> vehicleSchedule.addToList(v),
-						Materialized.<Vehicle.ScheduleStartTime, VehicleSchedule, WindowStore<Bytes, byte[]>>as(
+				.windowedBy(TimeWindows.of(30000))
+				.aggregate(Vehicles::new,
+						(k, v, vehicles) -> {
+							vehicles.add(v);
+							return vehicles;
+						},
+						Materialized.<Vehicle.ScheduleStartTime, Vehicles, WindowStore<Bytes, byte[]>>as(
 								VEHICLE_SCH_VIEW)
-								.withValueSerde(new VehicleScheduleSerde()))
+								.withKeySerde(new JsonSerde<>(Vehicle.ScheduleStartTime.class))
+								.withValueSerde(new VehiclesSerde()))
 				.toStream()
 				.map((k, v) -> {
-					System.out.println("In the last " + 5 + " secs, " + v
+					System.out.println("In the last " + 30 + " secs, " + v.list.size()
 							+ " new Vehicles were added to the " + k
 							+ " Start-Time bucket.");
 					return new KeyValue(k, v);
@@ -50,19 +54,19 @@ public class ScheduleApplication {
 
 		// find count of total number of cars by schedule time (time at which car needs started)
 
-		input
-				.map((k, v) -> new KeyValue<>(((Vehicle) v).getStartTime(), ((Vehicle) v)))
-				.groupByKey(Serialized
-						.with(new JsonSerde<>(Vehicle.ScheduleStartTime.class), new JsonSerde<>(Vehicle.class)))
-				.windowedBy(TimeWindows.of(5000))
-				.count(Materialized.as("test"))
-				.toStream()
-				.map((k, v) -> {
-					System.out.println("In the last " + 5 + " secs, " + v
-							+ " new Vehicles were added to the " + k
-							+ " Start-Time bucket.");
-					return new KeyValue(k, v);
-				});
+//		input
+//				.map((k, v) -> new KeyValue<>(((Vehicle) v).getStartTime(), ((Vehicle) v)))
+//				.groupByKey(Serialized
+//						.with(new JsonSerde<>(Vehicle.ScheduleStartTime.class), new JsonSerde<>(Vehicle.class)))
+//				.windowedBy(TimeWindows.of(5000))
+//				.count(Materialized.as("test"))
+//				.toStream()
+//				.map((k, v) -> {
+//					System.out.println("In the last " + 5 + " secs, " + v
+//							+ " new Vehicles were added to the " + k
+//							+ " Start-Time bucket.");
+//					return new KeyValue(k, v);
+//				});
 	}
 
 	interface VehicleScheduleProcessor {

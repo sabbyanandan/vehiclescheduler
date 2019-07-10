@@ -22,18 +22,18 @@ public class ScheduleVehicleViewController {
 	private InteractiveQueryService interactiveQueryService;
 
 	@RequestMapping("/aggregate")
-	public Map<Vehicle.ScheduleStartTime, List<VehicleSchedule>> windowedData() {
+	public Map<Vehicle.ScheduleStartTime, List<Vehicle>> windowedData() {
 
-		Map<Vehicle.ScheduleStartTime, List<VehicleSchedule>> vehicles = new HashMap<>();
+		Map<Vehicle.ScheduleStartTime, List<Vehicle>> vehicles = new HashMap<>();
 
-		ReadOnlyWindowStore<Vehicle.ScheduleStartTime, VehicleSchedule> queryableStore = interactiveQueryService
+		ReadOnlyWindowStore<Vehicle.ScheduleStartTime, Vehicles> queryableStore = interactiveQueryService
 				.getQueryableStore(ScheduleApplication.VEHICLE_SCH_VIEW,
 						QueryableStoreTypes.windowStore());
 
 		if (queryableStore != null) {
-			KeyValueIterator<Windowed<Vehicle.ScheduleStartTime>, VehicleSchedule> vehicleCountIterator = queryableStore
+			KeyValueIterator<Windowed<Vehicle.ScheduleStartTime>, Vehicles> vehicleCountIterator = queryableStore
 					.all();
-			Set<KeyValue<Windowed<Vehicle.ScheduleStartTime>, VehicleSchedule>> windowedSet = new LinkedHashSet<>();
+			Set<KeyValue<Windowed<Vehicle.ScheduleStartTime>, Vehicles>> windowedSet = new LinkedHashSet<>();
 			vehicleCountIterator.forEachRemaining(windowedSet::add);
 			vehicleCountIterator.close();
 			windowedSet.forEach(value -> vehicles.put(value.key.key(), value.value.list));
