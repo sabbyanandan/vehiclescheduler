@@ -2,7 +2,10 @@ package com.example.schedule;
 
 import com.example.common.Vehicle;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class VehicleSchedule {
 
@@ -18,7 +21,7 @@ public class VehicleSchedule {
 
 	Date addedToBucketTime;
 
-	final Map<Vehicle.ScheduleStartTime, List<VehicleSchedule>> vehicleScheduleMap = new HashMap<>();
+	List<VehicleSchedule> list = new ArrayList<>();
 
 	public VehicleSchedule() {
 	}
@@ -118,14 +121,9 @@ public class VehicleSchedule {
 			this.scheduledTime = vehicle.getScheduledTime();
 		addedToBucketTime = Calendar.getInstance().getTime();
 
-		if (vehicleScheduleMap.get(vehicle.getStartTime()) == null) {
-			vehicleScheduleMap.put(vehicle.getStartTime(), new ArrayList<>(Arrays.asList(this)));
-		}
-		else {
-			vehicleScheduleMap.get(vehicle.getStartTime()).add(this);
-		}
+		list.add(this);
 
-		System.out.println("Key = " + vehicle.getStartTime().name() + " Count = " + vehicleScheduleMap.size());
+		System.out.println("Key = " + vehicle.getStartTime().name() + " Count = " + list.size());
 
 		return this;
 	}

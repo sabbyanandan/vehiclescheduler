@@ -36,10 +36,7 @@ public class ScheduleApplication {
 						.with(new JsonSerde<>(Vehicle.ScheduleStartTime.class), new JsonSerde<>(Vehicle.class)))
 				.windowedBy(TimeWindows.of(5000))
 				.aggregate(() -> new VehicleSchedule(),
-						(k, v, vehicleSchedule) -> {
-							vehicleSchedule.addToList(v);
-							return vehicleSchedule;
-						},
+						(k, v, vehicleSchedule) -> vehicleSchedule.addToList(v),
 						Materialized.<Vehicle.ScheduleStartTime, VehicleSchedule, WindowStore<Bytes, byte[]>>as(
 								VEHICLE_SCH_VIEW)
 								.withValueSerde(new VehicleScheduleSerde()))
