@@ -19,7 +19,9 @@ import org.springframework.kafka.support.serializer.JsonSerde;
 @EnableBinding(ScheduleApplication.VehicleScheduleProcessor.class)
 public class ScheduleApplication {
 
-	static String VEHICLE_SCH_VIEW = "vehicle-aggregates-4";
+	static String VEHICLE_SCH_VIEW_DETAILS = "vehicle-aggregates-5";
+
+	static String VEHICLE_SCH_VIEW_COUNT = "vehicle-sch-count";
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScheduleApplication.class, args);
@@ -38,7 +40,7 @@ public class ScheduleApplication {
 				.aggregate(() -> new VehicleSchedule(),
 						(k, v, vehicleSchedule) -> vehicleSchedule.addToList(v),
 						Materialized.<Vehicle.ScheduleStartTime, VehicleSchedule, WindowStore<Bytes, byte[]>>as(
-								VEHICLE_SCH_VIEW)
+								VEHICLE_SCH_VIEW_DETAILS)
 								.withValueSerde(new VehicleScheduleSerde()))
 				.toStream()
 				.map((k, v) -> {
@@ -55,7 +57,7 @@ public class ScheduleApplication {
 				.groupByKey(Serialized
 						.with(new JsonSerde<>(Vehicle.ScheduleStartTime.class), new JsonSerde<>(Vehicle.class)))
 				.windowedBy(TimeWindows.of(5000))
-				.count(Materialized.as("test"))
+				.count(Materialized.as(VEHICLE_SCH_VIEW_COUNT))
 				.toStream()
 				.map((k, v) -> {
 					System.out.println("In the last " + 5 + " secs, " + v

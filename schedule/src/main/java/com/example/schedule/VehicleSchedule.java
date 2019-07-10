@@ -84,26 +84,6 @@ public class VehicleSchedule {
 		this.addedToBucketTime = addedToBucketTime;
 	}
 
-	public VehicleSchedule add(Vehicle vehicle) {
-
-		if (vehicle.getVIN() == null || vehicle.getVIN() == null)
-			throw new IllegalArgumentException("Invalid VIN - GIVING UP: " + vehicle);
-
-		if (this.VIN == null)
-			this.VIN = vehicle.getVIN();
-		if (this.type == null)
-			this.type = vehicle.getType();
-		if (this.manufacturer == null)
-			this.manufacturer = vehicle.getManufacturer();
-		if (this.startTime == null)
-			this.startTime = vehicle.getStartTime();
-		if (this.scheduledTime == null)
-			this.scheduledTime = vehicle.getScheduledTime();
-		addedToBucketTime = Calendar.getInstance().getTime();
-
-		return this;
-	}
-
 	public VehicleSchedule addToList(Vehicle vehicle) {
 
 		if (vehicle.getVIN() == null || vehicle.getVIN() == null)
