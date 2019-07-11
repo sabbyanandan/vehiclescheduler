@@ -50,7 +50,6 @@ public class VehicleApplication {
 				manufacturers.get(new Random().nextInt(manufacturers.size())),
 				vehicles.get(new Random().nextInt(vehicles.size())),
 				startTimes.get(new Random().nextInt(startTimes.size())), Calendar.getInstance().getTime());
-
 		source.output().send(MessageBuilder.withPayload(vehicle).build());
 		System.out.println("Generated Vehicle: " + vehicle);
 	}

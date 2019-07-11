@@ -35,7 +35,7 @@ public class ScheduleVehicleViewController {
 			Set<KeyValue<Windowed<Vehicle.ScheduleStartTime>, Vehicles>> windowedSet = new LinkedHashSet<>();
 			vehicleCountIterator.forEachRemaining(windowedSet::add);
 			vehicleCountIterator.close();
-			windowedSet.forEach(value -> vehicles.put(value.key.key(), value.value.list));
+			windowedSet.forEach(value -> vehicles.put(value.key.key(), value.value.vehicleList));
 		}
 		return vehicles;
 	}

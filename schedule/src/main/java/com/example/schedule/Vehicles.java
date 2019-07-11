@@ -8,17 +8,17 @@ import java.util.List;
 
 public class Vehicles implements Iterable<Vehicle> {
 
-	List<Vehicle> list = new ArrayList<>();
+	List<Vehicle> vehicleList = new ArrayList<>();
 
 	public void add(Vehicle vehicle) {
 		if (vehicle.getVIN() == null)
 			throw new IllegalArgumentException("Invalid VIN - GIVING UP: " + vehicle);
 
-		list.add(vehicle);
+		vehicleList.add(vehicle);
 	}
 
 	@Override
 	public Iterator<Vehicle> iterator() {
-		return list.iterator();
+		return vehicleList.iterator();
 	}
 }

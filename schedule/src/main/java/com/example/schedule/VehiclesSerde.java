@@ -81,8 +81,8 @@ public class VehiclesSerde implements Serde<Vehicles> {
 
 				JsonDeserializer<Vehicle> jsonDeserializer = new JsonDeserializer<>(Vehicle.class);
 				for (String split : splits) {
-					Vehicle deserialized = jsonDeserializer.deserialize(s, split.getBytes());
-					result.list.add(deserialized);
+					Vehicle deserializedVehicle = jsonDeserializer.deserialize(s, split.getBytes());
+					result.vehicleList.add(deserializedVehicle);
 				}
 				return result;
 			}

@@ -19,9 +19,9 @@ import org.springframework.kafka.support.serializer.JsonSerde;
 @EnableBinding(ScheduleApplication.VehicleScheduleProcessor.class)
 public class ScheduleApplication {
 
-	static String VEHICLE_SCH_VIEW_DETAILS = "vehicle-aggregates-18";
+	static String VEHICLE_SCH_VIEW_DETAILS = "vehicle-aggregates-19";
 
-	static String VEHICLE_SCH_VIEW_COUNT = "vehicle-sch-count-18";
+	static String VEHICLE_SCH_VIEW_COUNT = "vehicle-sch-count-19";
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScheduleApplication.class, args);
@@ -46,9 +46,9 @@ public class ScheduleApplication {
 								.withValueSerde(new VehiclesSerde()))
 				.toStream()
 				.map((k, v) -> {
-					System.out.println("In the last " + 30 + " secs, " + v.list.size()
-							+ " new Vehicles were added to the " + k
-							+ " Start-Time bucket.");
+					System.out.println(
+							v.vehicleList.size() + " new Vehicles were added to the Aggregated List under the " + k
+									.key() + " Start-Time bucket.");
 					return new KeyValue(k, v);
 				});
 
@@ -62,9 +62,7 @@ public class ScheduleApplication {
 				.count(Materialized.as(VEHICLE_SCH_VIEW_COUNT))
 				.toStream()
 				.map((k, v) -> {
-					System.out.println("In the last " + 5 + " secs, " + v
-							+ " new Vehicles were added to the " + k
-							+ " Start-Time bucket.");
+					System.out.println(v + " new Vehicles were added to the " + k.key() + " Start-Time bucket.");
 					return new KeyValue(k, v);
 				});
 	}

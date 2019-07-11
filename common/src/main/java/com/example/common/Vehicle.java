@@ -19,16 +19,16 @@ public class Vehicle {
 
 	public enum VehicleType {
 		CAR, SUV, TRUCK;
-
 	}
+
 	public enum Manufacturer {
 		TESLA, LANDROVER, BMW;
-
 	}
+
 	public enum ScheduleStartTime {
 		T_0600, T_0605, T_0610, T_0630, T_0705, T_0710, T_0720, T_0730, T_0735, T_0739, T_0800;
-
 	}
+
 	public Vehicle() {
 	}
 
