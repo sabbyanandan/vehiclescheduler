@@ -19,9 +19,9 @@ import org.springframework.kafka.support.serializer.JsonSerde;
 @EnableBinding(ScheduleApplication.VehicleScheduleProcessor.class)
 public class ScheduleApplication {
 
-	static String VEHICLE_SCH_VIEW_DETAILS = "vehicle-aggregates-17";
+	static String VEHICLE_SCH_VIEW_DETAILS = "vehicle-aggregates-18";
 
-	static String VEHICLE_SCH_VIEW_COUNT = "vehicle-sch-count-17";
+	static String VEHICLE_SCH_VIEW_COUNT = "vehicle-sch-count-18";
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScheduleApplication.class, args);
