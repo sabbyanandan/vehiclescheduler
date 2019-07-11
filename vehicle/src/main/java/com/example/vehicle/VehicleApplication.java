@@ -27,15 +27,7 @@ public class VehicleApplication {
 			.asList(Vehicle.Manufacturer.LANDROVER, Vehicle.Manufacturer.BMW, Vehicle.Manufacturer.TESLA);
 
 	static List<Vehicle.ScheduleStartTime> startTimes = Arrays
-			.asList(Vehicle.ScheduleStartTime.T_0600, Vehicle.ScheduleStartTime.T_0605,
-					Vehicle.ScheduleStartTime.T_0610,
-					Vehicle.ScheduleStartTime.T_0710, Vehicle.ScheduleStartTime.T_0705,
-					Vehicle.ScheduleStartTime.T_0630,
-					Vehicle.ScheduleStartTime.T_0720, Vehicle.ScheduleStartTime.T_0730,
-					Vehicle.ScheduleStartTime.T_0739,
-					Vehicle.ScheduleStartTime.T_0800, Vehicle.ScheduleStartTime.T_0735,
-					Vehicle.ScheduleStartTime.T_0605, Vehicle.ScheduleStartTime.T_0630,
-					Vehicle.ScheduleStartTime.T_0739);
+			.asList(Vehicle.ScheduleStartTime.T_0600);
 
 	@Autowired
 	private Source source;
@@ -49,7 +41,8 @@ public class VehicleApplication {
 		Vehicle vehicle = new Vehicle(Long.toHexString(Double.doubleToLongBits(Math.random())),
 				manufacturers.get(new Random().nextInt(manufacturers.size())),
 				vehicles.get(new Random().nextInt(vehicles.size())),
-				startTimes.get(new Random().nextInt(startTimes.size())), Calendar.getInstance().getTime());
+				startTimes.get(new Random().nextInt(startTimes.size())).name(),
+				Calendar.getInstance().getTime());
 
 		source.output().send(MessageBuilder.withPayload(vehicle).build());
 		System.out.println("Generated Vehicle: " + vehicle);

@@ -13,7 +13,7 @@ public class Vehicle {
 
 	VehicleType type;
 
-	ScheduleStartTime startTime;
+	String startTime;
 
 	Date scheduledTime;
 
@@ -33,7 +33,7 @@ public class Vehicle {
 	}
 
 	public Vehicle(String VIN, Manufacturer manufacturer, VehicleType type,
-			ScheduleStartTime startTime, Date scheduledTime) {
+			String startTime, Date scheduledTime) {
 		this.VIN = VIN;
 		this.manufacturer = manufacturer;
 		this.type = type;
@@ -65,7 +65,7 @@ public class Vehicle {
 		this.type = type;
 	}
 
-	public ScheduleStartTime getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
 
@@ -77,7 +77,7 @@ public class Vehicle {
 		this.scheduledTime = scheduledTime;
 	}
 
-	public void setStartTime(ScheduleStartTime startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
 
