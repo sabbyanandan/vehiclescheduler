@@ -1,12 +1,7 @@
 package com.example.schedule;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import com.example.common.Vehicle;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serializer;
@@ -29,22 +24,8 @@ public class VehiclesSerde implements Serde<Vehicles> {
 
 			@Override
 			public byte[] serialize(final String s, final Vehicles vehicles) {
-				JsonSerializer<Vehicle> jsonSerializer = new JsonSerializer<>();
-				final ByteArrayOutputStream out = new ByteArrayOutputStream();
-				final DataOutputStream
-						dataOutputStream =
-						new DataOutputStream(out);
-				try {
-
-					for (Vehicle vehicle : vehicles) {
-						byte[] serialized = jsonSerializer.serialize(s, vehicle);
-						dataOutputStream.write(serialized);
-					}
-					dataOutputStream.flush();
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-				return out.toByteArray();
+				JsonSerializer<Vehicles> jsonSerializer = new JsonSerializer<>();
+				return jsonSerializer.serialize(s, vehicles);
 			}
 
 			@Override
@@ -65,16 +46,8 @@ public class VehiclesSerde implements Serde<Vehicles> {
 				if (bytes.length == 0) {
 					return null;
 				}
-				String stringBytes = new String(bytes, StandardCharsets.UTF_8);
-				String[] splits = stringBytes.split("(?<=})");
-				final Vehicles result = new Vehicles();
-				JsonDeserializer<Vehicle> jsonDeserializer = new JsonDeserializer<>(Vehicle.class);
-				for (String split : splits) {
-					Vehicle deserialized = jsonDeserializer.deserialize(s, split.getBytes());
-					result.list.add(deserialized);
-				}
-
-				return result;
+				JsonDeserializer<Vehicles> jsonDeserializer = new JsonDeserializer<>(Vehicles.class);
+				return jsonDeserializer.deserialize(s, bytes);
 			}
 
 			@Override

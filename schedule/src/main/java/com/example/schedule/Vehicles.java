@@ -10,6 +10,17 @@ public class Vehicles implements Iterable<Vehicle> {
 
 	List<Vehicle> list = new ArrayList<>();
 
+	public Vehicles() {
+	}
+
+	public List<Vehicle> getList() {
+		return list;
+	}
+
+	public void setList(List<Vehicle> list) {
+		this.list = list;
+	}
+
 	public void add(Vehicle vehicle) {
 
 		if (vehicle.getVIN() == null)
